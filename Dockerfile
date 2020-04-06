@@ -1,9 +1,6 @@
-from golang:alpine as builder
+from golang:1.14 
 
-
-run apk update && apk add --no-cache git
-
-workdir /app
+workdir /usr/src/app
 
 copy go.mod go.sum ./
 
@@ -11,16 +8,8 @@ run go mod download
 
 copy . . 
 
-run CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o hello-world .
+run CGO_ENABLED=0 GOOS=linux go build 
 
-FROM alpine:latest
-run apk --no-cache add ca-certificates 
-
-workdir /root/
-
-copy --from=builder /app/hello-world .
-copy --from=builder /app/templates /root/templates
+CMD go get github.com/cosmtrek/air && air 
 
 EXPOSE 8080
-
-cmd [ "./hello-world"]
