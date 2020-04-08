@@ -1,13 +1,9 @@
-create User admin
-    with PASSWORD 'admin123'
-    createdb;
-
 create DATABASE dev 
     with owner admin;
 
 \connect dev; 
 
-CREATE extension pgcrypto;
+CREATE EXTENSION pgcrypto;
 
 CREATE SCHEMA helloworld AUTHORIZATION admin;
 
